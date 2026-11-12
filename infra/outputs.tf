@@ -7,3 +7,23 @@ output "availability_zones" {
   description = "Zonas usadas pelo ambiente."
   value       = local.azs
 }
+
+output "vpc_id" {
+  description = "ID da VPC."
+  value       = module.network.vpc_id
+}
+
+output "public_subnet_ids" {
+  description = "Subnets públicas."
+  value       = module.network.public_subnet_ids
+}
+
+output "private_subnet_ids" {
+  description = "Subnets privadas."
+  value       = module.network.private_subnet_ids
+}
+
+output "nat_public_ips" {
+  description = "IPs públicos de saída das subnets privadas."
+  value       = module.network.nat_public_ips
+}

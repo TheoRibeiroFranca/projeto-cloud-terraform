@@ -29,3 +29,21 @@ variable "az_count" {
     error_message = "Use pelo menos 2 zonas, para manter a alta disponibilidade."
   }
 }
+
+variable "ecs_instance_type" {
+  description = "Tipo das instâncias EC2 do cluster ECS. Só zonas que o oferecem são usadas."
+  type        = string
+  default     = "t3.small"
+}
+
+variable "vpc_cidr" {
+  description = "Faixa de IPs da VPC."
+  type        = string
+  default     = "10.10.0.0/16"
+}
+
+variable "single_nat_gateway" {
+  description = "true: um NAT para todas as zonas (mais barato). false: um NAT por zona."
+  type        = bool
+  default     = true
+}
