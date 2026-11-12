@@ -72,3 +72,18 @@ output "ecs_ami_id" {
   description = "AMI do ECS usada nesta região."
   value       = module.ecs_cluster.ami_id
 }
+
+output "store_url" {
+  description = "Endereço da loja."
+  value       = "http://${module.alb.public_dns_name}"
+}
+
+output "service_names" {
+  description = "Serviços ECS."
+  value = {
+    frontend     = module.frontend.service_name
+    backend-api  = module.backend_api.service_name
+    chatbot      = module.chatbot.service_name
+    order-worker = module.order_worker.service_name
+  }
+}

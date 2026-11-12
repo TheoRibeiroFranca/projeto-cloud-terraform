@@ -2,7 +2,8 @@
 # Constrói as imagens a partir do código-fonte e envia para o ECR de São Paulo.
 # Não usa o ECR de Ohio: as imagens nascem do código, nesta região.
 #
-# Uso (da raiz deste repositório, depois do terraform apply que cria o ECR):
+# Normalmente roda sozinho dentro do terraform apply (infra/images.tf), entre
+# a criação do ECR e a dos serviços. Para rodar à mão, da raiz do repositório:
 #   AWS_PROFILE=cirro-admin ./scripts/push-images.sh [tag]
 #
 # Os repositórios de código ficam ao lado deste, por padrão em ..:
@@ -15,8 +16,11 @@ TAG="${1:-$(date +%Y%m%d-%H%M%S)}"
 SRC="${SRC_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 INFRA="$(cd "$(dirname "$0")/../infra" && pwd)"
 
-REGISTRY="$(terraform -chdir="$INFRA" output -raw ecr_registry)"
-REGION="$(terraform -chdir="$INFRA" output -raw region)"
+# Dentro do apply, o Terraform passa estes valores (o state está travado e
+# `terraform output` não funcionaria). À mão, vêm das saídas do Terraform.
+REGISTRY="${REGISTRY:-$(terraform -chdir="$INFRA" output -raw ecr_registry)}"
+REGION="${REGION:-$(terraform -chdir="$INFRA" output -raw region)}"
+PREFIX="${REPOSITORY_PREFIX:-convcommerce}"
 
 # serviço | diretório do código | target do Dockerfile (vazio = o último estágio)
 # O backend tem um Dockerfile só, com um estágio para a API e outro para o worker.
@@ -32,7 +36,7 @@ aws ecr get-login-password --region "$REGION" |
 
 for entry in "${SERVICES[@]}"; do
   IFS='|' read -r service dir target <<<"$entry"
-  image="$REGISTRY/convcommerce/$service"
+  image="$REGISTRY/$PREFIX/$service"
   target_arg=()
   [[ -n "$target" ]] && target_arg=(--target "$target")
 

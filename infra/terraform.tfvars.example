@@ -11,3 +11,7 @@ single_nat_gateway = true
 rds_multi_az       = false
 ecs_min_instances  = 2
 ecs_max_instances  = 4
+
+image_tag      = "1"
+build_images   = true
+app_source_dir = "../.."

@@ -65,3 +65,21 @@ variable "ecs_max_instances" {
   type        = number
   default     = 4
 }
+
+variable "image_tag" {
+  description = "Tag das imagens. Mudar este valor reconstrói as imagens e faz deploy da versão nova."
+  type        = string
+  default     = "1"
+}
+
+variable "build_images" {
+  description = "true: o apply constrói e envia as imagens (requer Docker). false: as imagens já estão no ECR."
+  type        = bool
+  default     = true
+}
+
+variable "app_source_dir" {
+  description = "Pasta que contém projeto-cloud-backend, projeto-cloud-chatbot e projeto-cloud-frontend."
+  type        = string
+  default     = "../.."
+}
