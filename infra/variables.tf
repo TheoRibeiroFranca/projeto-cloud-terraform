@@ -53,3 +53,15 @@ variable "single_nat_gateway" {
   type        = bool
   default     = true
 }
+
+variable "ecs_min_instances" {
+  description = "Mínimo de instâncias no cluster."
+  type        = number
+  default     = 2
+}
+
+variable "ecs_max_instances" {
+  description = "Máximo de instâncias no cluster."
+  type        = number
+  default     = 4
+}

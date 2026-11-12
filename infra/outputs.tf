@@ -47,3 +47,28 @@ output "orders_queue_url" {
   description = "Fila de pedidos."
   value       = module.sqs.queue_url
 }
+
+output "ecr_repository_urls" {
+  description = "Repositórios de imagens, por serviço."
+  value       = module.ecr.repository_urls
+}
+
+output "ecr_registry" {
+  description = "Registro do ECR (para o docker login)."
+  value       = module.ecr.registry
+}
+
+output "ecs_cluster_name" {
+  description = "Cluster ECS."
+  value       = module.ecs_cluster.cluster_name
+}
+
+output "ecs_asg_name" {
+  description = "Auto Scaling Group do cluster."
+  value       = module.ecs_cluster.asg_name
+}
+
+output "ecs_ami_id" {
+  description = "AMI do ECS usada nesta região."
+  value       = module.ecs_cluster.ami_id
+}

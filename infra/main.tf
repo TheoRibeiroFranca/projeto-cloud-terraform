@@ -55,3 +55,24 @@ module "parameters" {
 
   ssm_prefix = local.names.ssm_prefix
 }
+
+# --- Computação ----------------------------------------------------------
+
+module "ecr" {
+  source = "../modules/ecr"
+
+  repository_prefix = local.names.ecr_repository_prefix
+  services          = local.services
+}
+
+module "ecs_cluster" {
+  source = "../modules/ecs-cluster"
+
+  name_prefix           = local.name_prefix
+  subnet_ids            = module.network.private_subnet_ids
+  security_group_id     = module.security.security_group_ids.ecs
+  instance_profile_name = module.security.ecs_instance_profile_name
+  instance_type         = var.ecs_instance_type
+  min_size              = var.ecs_min_instances
+  max_size              = var.ecs_max_instances
+}

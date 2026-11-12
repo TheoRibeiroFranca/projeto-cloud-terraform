@@ -25,6 +25,9 @@ locals {
   ])
   azs = slice(local.supported_azs, 0, var.az_count)
 
+  # Os 4 serviços ECS da aplicação.
+  services = ["frontend", "backend-api", "chatbot", "order-worker"]
+
   # Nomes combinados entre os módulos: as roles de IAM recebem permissão
   # exatamente nestes recursos, que os outros módulos criam com estes nomes.
   names = {
