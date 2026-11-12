@@ -1,0 +1,27 @@
+# Diretórios locais do Terraform (providers e módulos baixados)
+.terraform/
+
+# State: fica no S3, nunca no Git (pode conter segredos)
+*.tfstate
+*.tfstate.*
+.terraform.tfstate.lock.info
+
+# Variáveis com valores reais
+*.tfvars
+*.tfvars.json
+
+# Planos salvos (podem conter segredos)
+*.tfplan
+tfplan
+
+# Overrides locais
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Configuração da CLI e logs
+.terraformrc
+terraform.rc
+crash.log
+crash.*.log

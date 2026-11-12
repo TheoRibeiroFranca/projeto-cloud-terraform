@@ -1,0 +1,4 @@
+# Copie para backend.hcl e preencha com a saída de `terraform output backend_hcl`
+# no diretório bootstrap/.
+bucket = "convcommerce-tfstate-<ID_DA_CONTA>"
+region = "sa-east-1"
