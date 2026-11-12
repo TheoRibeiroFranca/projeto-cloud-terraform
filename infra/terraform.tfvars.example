@@ -17,3 +17,4 @@ build_images   = true
 app_source_dir = "../.."
 
 # alarm_emails = ["voce@exemplo.com"]
+admin_email    = "admin@cirro.test"

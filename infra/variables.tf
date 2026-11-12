@@ -89,3 +89,15 @@ variable "alarm_emails" {
   type        = list(string)
   default     = []
 }
+
+variable "admin_email" {
+  description = "E-mail da conta de administrador da loja, criada no apply."
+  type        = string
+  default     = "admin@cirro.test"
+}
+
+variable "admin_name" {
+  description = "Nome exibido da conta de administrador."
+  type        = string
+  default     = "Administrador"
+}

@@ -102,3 +102,13 @@ output "dashboard_url" {
   description = "Dashboard no CloudWatch."
   value       = module.observability.dashboard_url
 }
+
+output "admin_email" {
+  description = "Conta de administrador da loja."
+  value       = var.admin_email
+}
+
+output "admin_password_command" {
+  description = "Comando para ver a senha do administrador."
+  value       = "aws ssm get-parameter --region ${var.region} --with-decryption --name ${aws_ssm_parameter.admin_password.name} --query Parameter.Value --output text"
+}

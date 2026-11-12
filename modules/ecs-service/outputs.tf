@@ -8,6 +8,11 @@ output "log_group_name" {
   value       = aws_cloudwatch_log_group.this.name
 }
 
+output "task_definition_family" {
+  description = "Família da task definition (para tasks avulsas)."
+  value       = aws_ecs_task_definition.this.family
+}
+
 output "task_definition_arn" {
   description = "Revisão atual da task definition."
   value       = aws_ecs_task_definition.this.arn
