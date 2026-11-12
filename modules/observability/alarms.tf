@@ -318,7 +318,10 @@ resource "aws_cloudwatch_metric_alarm" "tasks_missing" {
   comparison_operator = "GreaterThanThreshold"
   threshold           = 0
   evaluation_periods  = 3
-  treat_missing_data  = "breaching" # sem métrica = serviço sem nenhuma task
+  # O Container Insights publica com falhas (principalmente logo depois que o
+  # cluster nasce); tratar a falta de dados como problema gerava falso alarme.
+  # Um serviço sem nenhuma task continua detectado: a métrica existe e vale 0.
+  treat_missing_data = "notBreaching"
 
   alarm_actions = local.alarm_actions
   ok_actions    = local.alarm_actions
