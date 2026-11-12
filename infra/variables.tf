@@ -42,6 +42,12 @@ variable "vpc_cidr" {
   default     = "10.10.0.0/16"
 }
 
+variable "rds_multi_az" {
+  description = "true: banco com réplica em espera em outra zona (dobra o custo do RDS)."
+  type        = bool
+  default     = false
+}
+
 variable "single_nat_gateway" {
   description = "true: um NAT para todas as zonas (mais barato). false: um NAT por zona."
   type        = bool

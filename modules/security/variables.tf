@@ -17,10 +17,14 @@ variable "names" {
     ecr_repository_prefix = string # ex.: convcommerce (repositórios convcommerce/*)
     log_group_prefix      = string # ex.: /convcommerce/sp
     ssm_prefix            = string # ex.: /convcommerce/sp
-    rds_secret_name       = string # ex.: convcommerce-sp/rds
     orders_queue          = string
     conversations_table   = string
   })
+}
+
+variable "rds_secret_arn" {
+  description = "Segredo com usuário e senha do banco, criado pelo próprio RDS."
+  type        = string
 }
 
 variable "bedrock_chat_inference_profile" {

@@ -19,7 +19,6 @@ locals {
     ecr_repos      = "arn:${local.partition}:ecr:${local.region}:${local.account}:repository/${var.names.ecr_repository_prefix}/*"
     log_groups     = "arn:${local.partition}:logs:${local.region}:${local.account}:log-group:${var.names.log_group_prefix}/*"
     ssm_param      = "arn:${local.partition}:ssm:${local.region}:${local.account}:parameter${var.names.ssm_prefix}"
-    rds_secret     = "arn:${local.partition}:secretsmanager:${local.region}:${local.account}:secret:${var.names.rds_secret_name}-??????"
     orders_queue   = "arn:${local.partition}:sqs:${local.region}:${local.account}:${var.names.orders_queue}"
     conversations  = "arn:${local.partition}:dynamodb:${local.region}:${local.account}:table/${var.names.conversations_table}"
     embedding      = "arn:${local.partition}:bedrock:${local.region}::foundation-model/${var.bedrock_embedding_model_id}"
@@ -119,7 +118,7 @@ data "aws_iam_policy_document" "task_execution" {
   statement {
     sid       = "ReadRdsSecret"
     actions   = ["secretsmanager:GetSecretValue"]
-    resources = [local.arn.rds_secret]
+    resources = [var.rds_secret_arn]
   }
 
   # Só os parâmetros que viram variáveis de ambiente, não o caminho inteiro.

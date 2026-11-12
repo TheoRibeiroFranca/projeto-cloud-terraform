@@ -27,3 +27,23 @@ output "nat_public_ips" {
   description = "IPs públicos de saída das subnets privadas."
   value       = module.network.nat_public_ips
 }
+
+output "rds_address" {
+  description = "Endereço do Postgres."
+  value       = module.rds.address
+}
+
+output "rds_secret_arn" {
+  description = "Segredo com usuário e senha do banco."
+  value       = module.rds.master_secret_arn
+}
+
+output "conversations_table" {
+  description = "Tabela de conversas."
+  value       = module.dynamodb.table_name
+}
+
+output "orders_queue_url" {
+  description = "Fila de pedidos."
+  value       = module.sqs.queue_url
+}
