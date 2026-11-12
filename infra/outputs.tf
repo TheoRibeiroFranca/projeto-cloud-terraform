@@ -87,3 +87,18 @@ output "service_names" {
     order-worker = module.order_worker.service_name
   }
 }
+
+output "alarm_topic_arn" {
+  description = "Tópico SNS dos alarmes."
+  value       = module.observability.alarm_topic_arn
+}
+
+output "alarm_count" {
+  description = "Quantidade de alarmes."
+  value       = module.observability.alarm_count
+}
+
+output "dashboard_url" {
+  description = "Dashboard no CloudWatch."
+  value       = module.observability.dashboard_url
+}

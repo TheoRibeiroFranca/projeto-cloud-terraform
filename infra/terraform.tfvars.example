@@ -15,3 +15,5 @@ ecs_max_instances  = 4
 image_tag      = "1"
 build_images   = true
 app_source_dir = "../.."
+
+# alarm_emails = ["voce@exemplo.com"]

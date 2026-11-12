@@ -83,3 +83,9 @@ variable "app_source_dir" {
   type        = string
   default     = "../.."
 }
+
+variable "alarm_emails" {
+  description = "E-mails que recebem os alarmes (cada um precisa confirmar a inscrição)."
+  type        = list(string)
+  default     = []
+}

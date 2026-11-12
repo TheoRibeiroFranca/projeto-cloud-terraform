@@ -17,3 +17,8 @@ output "master_secret_arn" {
   description = "Segredo do Secrets Manager com usuário e senha, criado pelo RDS."
   value       = aws_db_instance.this.master_user_secret[0].secret_arn
 }
+
+output "identifier" {
+  description = "Identificador da instância (métricas do CloudWatch)."
+  value       = aws_db_instance.this.identifier
+}
