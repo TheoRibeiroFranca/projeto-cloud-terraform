@@ -13,12 +13,19 @@ output "ecs_instance_profile_name" {
   value       = aws_iam_instance_profile.ecs_instance.name
 }
 
+# As roles só saem do módulo depois que as políticas estão anexadas. Sem isso,
+# o ECS pode iniciar tasks com uma role ainda sem permissões (aconteceu no
+# primeiro apply: as tasks não conseguiram baixar imagens nem ler segredos).
 output "task_execution_role_arn" {
   description = "Role de execução das tasks."
   value       = aws_iam_role.task_execution.arn
+
+  depends_on = [aws_iam_role_policy.task_execution]
 }
 
 output "app_role_arns" {
   description = "Role de aplicação de cada serviço."
   value       = { for k, r in aws_iam_role.app : k => r.arn }
+
+  depends_on = [aws_iam_role_policy.app]
 }
