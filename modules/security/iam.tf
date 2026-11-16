@@ -160,6 +160,14 @@ data "aws_iam_policy_document" "backend_api" {
     actions   = ["ssm:GetParameter"]
     resources = [local.faults_parameter]
   }
+
+  # A senha injetada pelo ECS envelhece com a rotação do RDS; a aplicação relê
+  # o segredo direto quando o banco recusa a senha antiga.
+  statement {
+    sid       = "ReadDbSecret"
+    actions   = ["secretsmanager:GetSecretValue"]
+    resources = [var.rds_secret_arn]
+  }
 }
 
 data "aws_iam_policy_document" "order_worker" {
@@ -180,6 +188,14 @@ data "aws_iam_policy_document" "order_worker" {
     sid       = "ReadFaults"
     actions   = ["ssm:GetParameter"]
     resources = [local.faults_parameter]
+  }
+
+  # A senha injetada pelo ECS envelhece com a rotação do RDS; a aplicação relê
+  # o segredo direto quando o banco recusa a senha antiga.
+  statement {
+    sid       = "ReadDbSecret"
+    actions   = ["secretsmanager:GetSecretValue"]
+    resources = [var.rds_secret_arn]
   }
 }
 

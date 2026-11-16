@@ -35,6 +35,9 @@ locals {
     DB_PORT    = tostring(module.rds.port)
     DB_NAME    = module.rds.db_name
     DB_SSLMODE = "require"
+    # O RDS troca a senha a cada 7 dias. Com o ARN, a aplicação relê o segredo
+    # quando o Postgres recusa a senha antiga (db_credentials.py no backend).
+    DB_SECRET_ARN = module.rds.master_secret_arn
   }
 
   db_secrets = {

@@ -69,7 +69,7 @@ variable "ecs_max_instances" {
 variable "image_tag" {
   description = "Tag das imagens. Mudar este valor reconstrói as imagens e faz deploy da versão nova."
   type        = string
-  default     = "1"
+  default     = "2"
 }
 
 variable "build_images" {
