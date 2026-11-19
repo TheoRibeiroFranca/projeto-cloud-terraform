@@ -7,7 +7,7 @@
 #   serviço        cpu   reserva  limite   tasks
 #   frontend        64     64 MB  128 MB   2-4
 #   backend-api    256    256 MB  512 MB   2-8
-#   chatbot        256    256 MB  512 MB   2-8
+#   chatbot        512    256 MB  512 MB   2-8
 #   order-worker   128    128 MB  256 MB   1-6
 
 module "alb" {
@@ -158,7 +158,9 @@ module "chatbot" {
   task_role_arn          = module.security.app_role_arns["chatbot"]
   image                  = local.image_urls["chatbot"]
 
-  cpu                = 256
+  # 512 unidades: com 256, o ensaio de Ohio de 17/11 mediu 72-150% de CPU
+  # média com 8 tasks, e o chat ficava lento com 30 usuários.
+  cpu                = 512
   memory             = 512
   memory_reservation = 256
   container_port     = 8000

@@ -10,7 +10,7 @@ vpc_cidr           = "10.10.0.0/16"
 single_nat_gateway = true
 rds_multi_az       = false
 ecs_min_instances  = 2
-ecs_max_instances  = 4
+ecs_max_instances  = 6
 
 image_tag      = "2"
 build_images   = true
