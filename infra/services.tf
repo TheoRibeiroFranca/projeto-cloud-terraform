@@ -132,9 +132,13 @@ module "backend_api" {
   min_tasks  = 2
   max_tasks  = 8
   cpu_target = 60
+  # ALBRequestCountPerTarget é a soma de requisições por alvo em 1 minuto.
+  # O tráfego do backend entra pelo ALB interno (590-632 req/alvo/min no
+  # ensaio de Ohio de 17/11); com alvo 1500 o serviço fica em 2 a 4 tasks
+  # nessa carga, em vez de ir ao teto de 8.
   requests_per_target = {
-    target         = 60
-    resource_label = module.alb.request_count_labels["backend"]
+    target         = 1500
+    resource_label = module.alb.request_count_labels["backend-int"]
   }
 }
 
@@ -174,13 +178,15 @@ module "chatbot" {
 
   load_balancers = [module.alb.target_group_arns["chatbot"]]
 
-  # Cada mensagem espera a resposta do modelo, por isso o alvo de
-  # requisições por task é menor que o do backend.
+  # O chatbot é limitado por CPU (ensaio de Ohio de 17/11: 72-150% de média
+  # com 8 tasks); quem manda na escala dele é a política de CPU. A de
+  # requisições, com alvo 250 req/alvo/min (~290 medidos), cobre carga leve e
+  # numerosa sem gerar ruído.
   min_tasks  = 2
   max_tasks  = 8
   cpu_target = 60
   requests_per_target = {
-    target         = 30
+    target         = 250
     resource_label = module.alb.request_count_labels["chatbot"]
   }
 }

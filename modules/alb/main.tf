@@ -191,11 +191,15 @@ output "target_group_arns" {
 }
 
 # Rótulos usados pela métrica "requisições por target" do autoscaling.
+# Rótulo da métrica ALBRequestCountPerTarget de cada target group, no ALB que
+# de fato o atende: os públicos no ALB público, o backend-int no interno. O
+# backend recebe quase todo o tráfego pelo ALB interno (vindo do chatbot); uma
+# política no target group público dele vigiaria um alvo quase ocioso.
 output "request_count_labels" {
-  description = "Rótulo app/.../targetgroup/... de cada target group do ALB público."
+  description = "Rótulo app/.../targetgroup/... de cada target group, no ALB que o atende."
   value = {
     for k, tg in aws_lb_target_group.this :
-    k => "${aws_lb.public.arn_suffix}/${tg.arn_suffix}" if !local.target_groups[k].internal
+    k => "${local.target_groups[k].internal ? aws_lb.internal.arn_suffix : aws_lb.public.arn_suffix}/${tg.arn_suffix}"
   }
 }
 
