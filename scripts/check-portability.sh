@@ -151,6 +151,7 @@ if [[ "$MODE" == "--destroyed" ]]; then
   check_empty "dashboards" "$("${AWS[@]}" cloudwatch list-dashboards --dashboard-name-prefix "$PREFIX" --query 'DashboardEntries[].DashboardName')"
   check_empty "log groups da aplicação" "$("${AWS[@]}" logs describe-log-groups --log-group-name-prefix "/$PROJECT/$ENVIRONMENT" --query 'logGroups[].logGroupName')"
   check_empty "roles IAM" "$(aws iam list-roles --output text --query "Roles[?starts_with(RoleName, '$PREFIX-')].RoleName")"
+  check_empty "orçamentos" "$(aws budgets describe-budgets --account-id "$ACCOUNT" --output text --query "Budgets[?starts_with(BudgetName, '$PREFIX-')].BudgetName")"
   check_empty "instance profiles" "$(aws iam list-instance-profiles --output text --query "InstanceProfiles[?starts_with(InstanceProfileName, '$PREFIX-')].InstanceProfileName")"
 
   # Criado pelo próprio ECS quando o Container Insights liga; o Terraform não

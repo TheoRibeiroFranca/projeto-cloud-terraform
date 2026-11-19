@@ -85,9 +85,15 @@ variable "app_source_dir" {
 }
 
 variable "alarm_emails" {
-  description = "E-mails que recebem os alarmes (cada um precisa confirmar a inscrição)."
+  description = "E-mails que recebem os alarmes e os avisos do orçamento (cada um precisa confirmar a inscrição dos alarmes)."
   type        = list(string)
   default     = []
+}
+
+variable "monthly_budget_usd" {
+  description = "Limite mensal do orçamento do ambiente, em dólares."
+  type        = number
+  default     = 100
 }
 
 variable "admin_email" {

@@ -112,3 +112,8 @@ output "admin_password_command" {
   description = "Comando para ver a senha do administrador."
   value       = "aws ssm get-parameter --region ${var.region} --with-decryption --name ${aws_ssm_parameter.admin_password.name} --query Parameter.Value --output text"
 }
+
+output "budget_name" {
+  description = "Orçamento mensal do ambiente (console do Billing > Budgets)."
+  value       = aws_budgets_budget.monthly.name
+}
