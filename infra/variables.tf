@@ -87,7 +87,7 @@ variable "app_source_dir" {
 variable "alarm_emails" {
   description = "E-mails que recebem os alarmes e os avisos do orçamento (cada um precisa confirmar a inscrição dos alarmes)."
   type        = list(string)
-  default     = []
+  default     = ["theoptbr@gmail.com"]
 }
 
 variable "monthly_budget_usd" {
