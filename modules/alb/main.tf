@@ -191,6 +191,10 @@ output "target_group_arns" {
 }
 
 # Rótulos usados pela métrica "requisições por target" do autoscaling.
+# Rótulo da métrica ALBRequestCountPerTarget de cada target group, no ALB que
+# de fato o atende: os públicos no ALB público, o backend-int no interno. O
+# backend recebe quase todo o tráfego pelo ALB interno (vindo do chatbot); uma
+# política no target group público dele vigiaria um alvo quase ocioso.
 output "request_count_labels" {
   description = "Rótulo app/.../targetgroup/... de cada target group, no ALB que de fato o serve."
   # Cada rótulo tem de apontar para o ALB que recebe o tráfego daquele target

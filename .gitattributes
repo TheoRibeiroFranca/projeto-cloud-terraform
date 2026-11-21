@@ -1,0 +1,8 @@
+# Terraform e scripts com quebra de linha LF em qualquer sistema. Com CRLF
+# (padrão do Git no Windows), o user_data do launch template ganha um retorno de carro (CR) e o
+# #!/bin/bash das instâncias novas quebra.
+*.tf    text eol=lf
+*.hcl   text eol=lf
+*.sh    text eol=lf
+*.tfvars text eol=lf
+*.example text eol=lf

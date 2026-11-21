@@ -7,7 +7,7 @@
 #   serviço        cpu   reserva  limite   tasks
 #   frontend        64     64 MB  128 MB   2-4
 #   backend-api    256    256 MB  512 MB   2-8
-#   chatbot        256    256 MB  512 MB   2-8
+#   chatbot        512    256 MB  512 MB   2-8
 #   order-worker   128    128 MB  256 MB   1-6
 
 module "alb" {
@@ -189,8 +189,10 @@ module "chatbot" {
 
   load_balancers = [module.alb.target_group_arns["chatbot"]]
 
-  # Cada mensagem espera a resposta do modelo, por isso o alvo de
-  # requisições por task é menor que o do backend.
+  # O chatbot é limitado por CPU (ensaio de Ohio de 17/11: 72-150% de média
+  # com 8 tasks); quem manda na escala dele é a política de CPU. A de
+  # requisições, com alvo 250 req/alvo/min (~290 medidos), cobre carga leve e
+  # numerosa sem gerar ruído.
   min_tasks  = 2
   max_tasks  = 8
   cpu_target = 60

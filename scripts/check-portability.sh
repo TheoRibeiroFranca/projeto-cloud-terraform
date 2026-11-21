@@ -14,6 +14,13 @@
 # Sai com código 0 só se todas as verificações passarem.
 set -uo pipefail
 
+# No Git Bash, o MSYS reescreve argumentos que parecem caminho POSIX antes de
+# chamar um .exe: "/convcommerce/sp" chegaria ao aws.exe como "C:/Program
+# Files/Git/convcommerce/sp", a consulta falharia e a verificação passaria sem
+# olhar nada. A desativação vale só para o aws; o terraform precisa da conversão
+# para receber o caminho de infra/.
+aws() { MSYS_NO_PATHCONV=1 command aws "$@"; }
+
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 INFRA="$ROOT/infra"
 APPS_DIR="${APPS_DIR:-$(dirname "$ROOT")}"

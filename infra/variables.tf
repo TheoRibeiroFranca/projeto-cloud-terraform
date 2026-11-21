@@ -61,9 +61,11 @@ variable "ecs_min_instances" {
 }
 
 variable "ecs_max_instances" {
+  # 6: no pico, as reservas de CPU somam ~7.200 unidades (chatbot com 512);
+  # 4 t3.small dão 8.192, sem folga para o target de 90% do Capacity Provider.
   description = "Máximo de instâncias no cluster."
   type        = number
-  default     = 4
+  default     = 6
 }
 
 variable "image_tag" {
