@@ -16,5 +16,5 @@ image_tag      = "2"
 build_images   = true
 app_source_dir = "../.."
 
-# alarm_emails = ["voce@exemplo.com"]
-admin_email    = "admin@cirro.test"
+alarm_emails = ["theoptbr@gmail.com"]
+admin_email  = "admin@cirro.test"

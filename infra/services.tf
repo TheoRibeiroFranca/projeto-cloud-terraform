@@ -132,10 +132,14 @@ module "backend_api" {
   min_tasks  = 2
   max_tasks  = 8
   cpu_target = 60
-  # ALBRequestCountPerTarget é a soma de requisições por alvo em 1 minuto.
-  # O tráfego do backend entra pelo ALB interno (590-632 req/alvo/min no
-  # ensaio de Ohio de 17/11); com alvo 1500 o serviço fica em 2 a 4 tasks
-  # nessa carga, em vez de ir ao teto de 8.
+  # Target group INTERNO: é por ele que o chatbot chama o backend, e é onde o
+  # tráfego real está (590-632 req/alvo/min contra 0,1 no público). Alvo 1500
+  # req/alvo/min veio da medição de 17/11: com 8 tasks a CPU ficou em 14-20%,
+  # ou seja, folga demais; 1500 põe o serviço em 3-4 tasks nessa carga.
+  #
+  # ATENÇÃO À UNIDADE: ALBRequestCountPerTarget é soma por MINUTO, não por
+  # segundo. O valor antigo, 60, equivalia a 1 req/s por task — nenhuma
+  # aplicação real fica abaixo disso, então a política vivia pedindo o máximo.
   requests_per_target = {
     target         = 1500
     resource_label = module.alb.request_count_labels["backend-int"]
@@ -158,8 +162,13 @@ module "chatbot" {
   task_role_arn          = module.security.app_role_arns["chatbot"]
   image                  = local.image_urls["chatbot"]
 
-  # 512 unidades: com 256, o ensaio de Ohio de 17/11 mediu 72-150% de CPU
-  # média com 8 tasks, e o chat ficava lento com 30 usuários.
+  # 512 e não 256: sob carga o chatbot ficou com CPU média entre 72% e 150%
+  # sobre uma reserva de 0,25 vCPU, ou seja, saturado mesmo com 8 tasks — era
+  # o gargalo do sistema. Medido em 17 e 19/11 (ANALISE.md no repo do backend).
+  #
+  # Cabe no dimensionamento atual: no pico teórico (chatbot 8x512 + backend
+  # 8x256 + worker 6x128 + frontend 2x64 = 7040 unidades) contra 4 t3.small
+  # = 8192. Fica apertado; se ecs_max_instances cair de 4, revisar junto.
   cpu                = 512
   memory             = 512
   memory_reservation = 256
@@ -187,6 +196,9 @@ module "chatbot" {
   min_tasks  = 2
   max_tasks  = 8
   cpu_target = 60
+  # Alvo 250: mediu-se ~290 req/alvo/min com 8 tasks. O chatbot é limitado por
+  # CPU, não por contagem de requisição — esta política cobre carga leve e
+  # numerosa; quem manda, na prática, é a de CPU.
   requests_per_target = {
     target         = 250
     resource_label = module.alb.request_count_labels["chatbot"]
