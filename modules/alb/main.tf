@@ -192,10 +192,17 @@ output "target_group_arns" {
 
 # Rótulos usados pela métrica "requisições por target" do autoscaling.
 output "request_count_labels" {
-  description = "Rótulo app/.../targetgroup/... de cada target group do ALB público."
+  description = "Rótulo app/.../targetgroup/... de cada target group, no ALB que de fato o serve."
+  # Cada rótulo tem de apontar para o ALB que recebe o tráfego daquele target
+  # group. Antes este output só cobria os públicos e colava todos ao ALB
+  # público — então a política do backend-api vigiava o target group público,
+  # que recebe ~0,1 requisição por minuto, enquanto o tráfego real (590-632
+  # req/alvo/min) entra pelo ALB interno, vindo do chatbot. A política nunca
+  # disparava e o serviço escalava só por CPU, por acidente. Medido em Ohio
+  # em 17/11/2026; ver docs/evidencias/ohio/ANALISE.md no repo do backend.
   value = {
     for k, tg in aws_lb_target_group.this :
-    k => "${aws_lb.public.arn_suffix}/${tg.arn_suffix}" if !local.target_groups[k].internal
+    k => "${local.target_groups[k].internal ? aws_lb.internal.arn_suffix : aws_lb.public.arn_suffix}/${tg.arn_suffix}"
   }
 }
 
